@@ -1,0 +1,21 @@
+---
+- name: My first play to copy and install rpm files
+  become: true
+  hosts: all
+  tasks:
+
+    - name: Copy rpm file to server
+      copy:
+        src: chef-16.3.13-1.el7.x86_64.rpm
+        dest: /home/c8yadmin/package.rpm
+
+    - name: Install package.
+      yum:
+        name: /home/c8yadmin/package.rpm
+        state: present
+     
+    - name: return motd to registered var
+      command: chef-client -version
+      register: cat
+    - debug: var=cat.stdout_lines
+    
